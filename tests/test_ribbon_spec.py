@@ -1,6 +1,6 @@
 import unittest
 
-from mmclone.ui import ribbon_spec as rs
+from easy_movie_studio.ui import ribbon_spec as rs
 
 
 def walk_widgets(tab):

@@ -1,4 +1,4 @@
-"""Tests for mmclone/autosave.py: crash-recovery autosave storage (no Qt needed -- the
+"""Tests for easy_movie_studio/autosave.py: crash-recovery autosave storage (no Qt needed -- the
 periodic timer and recovery prompt are UI wiring, covered in test_autosave_ui.py)."""
 
 import json
@@ -7,8 +7,8 @@ import shutil
 import tempfile
 import unittest
 
-from mmclone.autosave import AutosaveInfo, AutosaveManager
-from mmclone.model import Clip, Project
+from easy_movie_studio.autosave import AutosaveInfo, AutosaveManager
+from easy_movie_studio.model import Clip, Project
 
 
 class AutosaveManagerTests(unittest.TestCase):

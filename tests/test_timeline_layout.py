@@ -1,6 +1,6 @@
 import unittest
 
-from mmclone.ui.timeline_layout import (LEFT_MARGIN, ROW_GAP, ROW_HEIGHT, RULER_HEIGHT,
+from easy_movie_studio.ui.timeline_layout import (LEFT_MARGIN, ROW_GAP, ROW_HEIGHT, RULER_HEIGHT,
                                         collect_snap_anchors, row_at_y, row_top, snap_time,
                                         time_to_x, x_to_time)
 

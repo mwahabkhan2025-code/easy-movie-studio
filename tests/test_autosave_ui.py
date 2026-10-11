@@ -18,7 +18,7 @@ except ImportError:  # pragma: no cover
 class MainWindowAutosaveWiringTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        from mmclone.ui.theme import stylesheet
+        from easy_movie_studio.ui.theme import stylesheet
         cls.app = QApplication.instance() or QApplication([])
         cls.app.setStyle("Fusion")
         cls.app.setStyleSheet(stylesheet())
@@ -26,11 +26,11 @@ class MainWindowAutosaveWiringTests(unittest.TestCase):
     def setUp(self):
         import shutil
         import tempfile
-        from mmclone.autosave import AutosaveManager
-        from mmclone.demo import demo_project
-        from mmclone.recent import RecentProjects
-        from mmclone.settings import SettingsStore
-        from mmclone.ui.main_window import MainWindow
+        from easy_movie_studio.autosave import AutosaveManager
+        from easy_movie_studio.demo import demo_project
+        from easy_movie_studio.recent import RecentProjects
+        from easy_movie_studio.settings import SettingsStore
+        from easy_movie_studio.ui.main_window import MainWindow
         self.tmp = tempfile.mkdtemp()
         self.addCleanup(shutil.rmtree, self.tmp, ignore_errors=True)
         self.autosave = AutosaveManager(os.path.join(self.tmp, "autosave"))
@@ -64,7 +64,7 @@ class MainWindowAutosaveWiringTests(unittest.TestCase):
         self.assertIsNone(self.autosave.pending())
 
     def test_installing_a_new_project_clears_any_pending_autosave(self):
-        from mmclone.model import Project
+        from easy_movie_studio.model import Project
         self.window._mark_dirty()
         self.window._autosave_tick()
         self.assertIsNotNone(self.autosave.pending())
@@ -73,18 +73,18 @@ class MainWindowAutosaveWiringTests(unittest.TestCase):
 
     def test_recovery_check_with_nothing_pending_does_not_prompt(self):
         from unittest import mock
-        with mock.patch("mmclone.ui.main_window.QMessageBox.question") as question:
+        with mock.patch("easy_movie_studio.ui.main_window.QMessageBox.question") as question:
             self.window._check_autosave_recovery()
         question.assert_not_called()
 
     def test_declining_recovery_clears_the_autosave_and_keeps_current_project(self):
         from unittest import mock
-        from mmclone.model import Clip, Project
+        from easy_movie_studio.model import Clip, Project
         other = Project.new("Crashed Movie")
         other.main_track.add_clip(Clip.from_video("c.mp4", 2.0))
         self.autosave.save(other, "/somewhere/crashed.mmproj")
         original_name = self.window.project.name
-        with mock.patch("mmclone.ui.main_window.QMessageBox.question",
+        with mock.patch("easy_movie_studio.ui.main_window.QMessageBox.question",
                         return_value=QMessageBox.StandardButton.No):
             self.window._check_autosave_recovery()
         self.assertEqual(self.window.project.name, original_name)
@@ -92,11 +92,11 @@ class MainWindowAutosaveWiringTests(unittest.TestCase):
 
     def test_accepting_recovery_installs_the_recovered_project_as_dirty(self):
         from unittest import mock
-        from mmclone.model import Clip, Project
+        from easy_movie_studio.model import Clip, Project
         other = Project.new("Crashed Movie")
         other.main_track.add_clip(Clip.from_video("c.mp4", 2.0))
         self.autosave.save(other, "/somewhere/crashed.mmproj")
-        with mock.patch("mmclone.ui.main_window.QMessageBox.question",
+        with mock.patch("easy_movie_studio.ui.main_window.QMessageBox.question",
                         return_value=QMessageBox.StandardButton.Yes):
             self.window._check_autosave_recovery()
         self.assertEqual(self.window.project.name, "Crashed Movie")
@@ -114,9 +114,9 @@ class MainWindowAutosaveWiringTests(unittest.TestCase):
                   encoding="utf-8") as handle:
             json.dump({"original_path": None, "original_name": "X", "saved_at": time.time()},
                       handle)
-        with mock.patch("mmclone.ui.main_window.QMessageBox.question",
+        with mock.patch("easy_movie_studio.ui.main_window.QMessageBox.question",
                         return_value=QMessageBox.StandardButton.Yes), \
-             mock.patch("mmclone.ui.main_window.QMessageBox.critical") as critical:
+             mock.patch("easy_movie_studio.ui.main_window.QMessageBox.critical") as critical:
             self.window._check_autosave_recovery()
         self.assertTrue(critical.called)
         self.assertIsNone(self.autosave.pending())

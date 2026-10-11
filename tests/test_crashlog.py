@@ -1,4 +1,4 @@
-"""Tests for the global exception hook (mmclone/crashlog.py). No Qt needed -- the
+"""Tests for the global exception hook (easy_movie_studio/crashlog.py). No Qt needed -- the
 GUI dialog it triggers is covered by on_crash being a plain callback, tested here with
 a stand-in."""
 
@@ -9,7 +9,7 @@ import tempfile
 import unittest
 from unittest import mock
 
-from mmclone import crashlog
+from easy_movie_studio import crashlog
 
 
 class WriteCrashLogTests(unittest.TestCase):
@@ -41,7 +41,7 @@ class WriteCrashLogTests(unittest.TestCase):
         path = crashlog.write_crash_log(exc_type, exc_value, tb)
         with open(path, encoding="utf-8") as handle:
             content = handle.read()
-        from mmclone import APP_NAME, __version__
+        from easy_movie_studio import APP_NAME, __version__
         self.assertIn(APP_NAME, content)
         self.assertIn(__version__, content)
 

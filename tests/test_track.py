@@ -1,6 +1,6 @@
 import unittest
 
-from mmclone.model import Clip, Track, Transition
+from easy_movie_studio.model import Clip, Track, Transition
 
 
 def video(duration, **kw):

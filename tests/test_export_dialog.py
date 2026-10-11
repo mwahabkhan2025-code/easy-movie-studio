@@ -20,8 +20,8 @@ class SaveMovieDialogTests(unittest.TestCase):
         cls.app = QApplication.instance() or QApplication([])
 
     def make_dialog(self, preset="recommended"):
-        from mmclone.model import Clip, Project
-        from mmclone.ui.export_dialog import SaveMovieDialog
+        from easy_movie_studio.model import Clip, Project
+        from easy_movie_studio.ui.export_dialog import SaveMovieDialog
         project = Project.new("Demo")
         project.main_track.add_clip(Clip.from_video("a.mp4", 10.0))
         dialog = SaveMovieDialog(project, silent_sources=set(), default_preset=preset)
@@ -66,7 +66,7 @@ class SaveMovieDialogTests(unittest.TestCase):
 class MainWindowExportWiringTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        from mmclone.ui.theme import stylesheet
+        from easy_movie_studio.ui.theme import stylesheet
         cls.app = QApplication.instance() or QApplication([])
         cls.app.setStyle("Fusion")
         cls.app.setStyleSheet(stylesheet())
@@ -74,23 +74,23 @@ class MainWindowExportWiringTests(unittest.TestCase):
     def setUp(self):
         import shutil
         import tempfile
-        from mmclone.demo import demo_project
-        from mmclone.recent import RecentProjects
-        from mmclone.ui.main_window import MainWindow
+        from easy_movie_studio.demo import demo_project
+        from easy_movie_studio.recent import RecentProjects
+        from easy_movie_studio.ui.main_window import MainWindow
         self.tmp = tempfile.mkdtemp()
         self.addCleanup(shutil.rmtree, self.tmp, ignore_errors=True)
         self.window = MainWindow(demo_project(), RecentProjects(os.path.join(self.tmp, "r.json")))
         self.addCleanup(self.window.deleteLater)
 
     def test_empty_project_refuses_to_open_the_dialog(self):
-        from mmclone.model import Project
+        from easy_movie_studio.model import Project
         self.window._install_project(Project.new(), None)
         self.window.open_save_movie_dialog()  # should just show a status message, not raise
         self.assertIn("Add a video", self.window.statusBar().currentMessage())
 
     def test_save_movie_command_opens_with_the_right_preset(self):
         from unittest import mock
-        with mock.patch("mmclone.ui.main_window.SaveMovieDialog") as dialog_cls:
+        with mock.patch("easy_movie_studio.ui.main_window.SaveMovieDialog") as dialog_cls:
             dialog_cls.return_value.exec.return_value = None
             self.window.on_command("file.save_movie/hq")
         args, _kwargs = dialog_cls.call_args
@@ -98,7 +98,7 @@ class MainWindowExportWiringTests(unittest.TestCase):
 
     def test_export_preset_gallery_also_opens_the_dialog(self):
         from unittest import mock
-        with mock.patch("mmclone.ui.main_window.SaveMovieDialog") as dialog_cls:
+        with mock.patch("easy_movie_studio.ui.main_window.SaveMovieDialog") as dialog_cls:
             dialog_cls.return_value.exec.return_value = None
             self.window.on_command("home.export_preset/mobile")
         args, _kwargs = dialog_cls.call_args
@@ -106,11 +106,11 @@ class MainWindowExportWiringTests(unittest.TestCase):
 
     def test_silent_sources_are_passed_from_probed_media(self):
         from unittest import mock
-        from mmclone.engine.media_info import MediaInfo
+        from easy_movie_studio.engine.media_info import MediaInfo
         clip = self.window.storyboard.clips()[0]
         self.window.media[clip.source] = MediaInfo(path=clip.source, kind="video",
                                                     duration=5.0, audio=None)
-        with mock.patch("mmclone.ui.main_window.SaveMovieDialog") as dialog_cls:
+        with mock.patch("easy_movie_studio.ui.main_window.SaveMovieDialog") as dialog_cls:
             dialog_cls.return_value.exec.return_value = None
             self.window.on_command("file.save_movie/recommended")
         args, _kwargs = dialog_cls.call_args

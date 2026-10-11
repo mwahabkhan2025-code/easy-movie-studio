@@ -453,9 +453,9 @@ class MainWindow(QMainWindow):
         """Make an Options-dialog FFmpeg folder override take effect by setting the
         same environment variable engine.tools.find_tool() already checks first."""
         if self.settings.ffmpeg_dir:
-            os.environ["MMCLONE_FFMPEG_DIR"] = self.settings.ffmpeg_dir
+            os.environ["EASY_MOVIE_STUDIO_FFMPEG_DIR"] = self.settings.ffmpeg_dir
         else:
-            os.environ.pop("MMCLONE_FFMPEG_DIR", None)
+            os.environ.pop("EASY_MOVIE_STUDIO_FFMPEG_DIR", None)
 
     def open_options_dialog(self) -> None:
         dialog = OptionsDialog(self.settings, self)

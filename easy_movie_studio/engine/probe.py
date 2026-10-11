@@ -267,7 +267,7 @@ def probe(path: str, use_ffprobe: bool = True) -> MediaInfo:
             ffmpeg = find_ffmpeg()
             if not ffmpeg:
                 raise ProbeError("FFmpeg was not found. Install the requirements or set "
-                                 "MMCLONE_FFMPEG_DIR.")
+                                 "EASY_MOVIE_STUDIO_FFMPEG_DIR.")
             result = run_tool([ffmpeg, "-hide_banner", "-nostdin", "-i", path])
             info = parse_ffmpeg_info(result.stderr.decode("utf-8", "replace"), path)
     except (OSError, ValueError) as exc:  # subprocess failure or bad JSON

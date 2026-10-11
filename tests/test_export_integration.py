@@ -7,11 +7,11 @@ import shutil
 import tempfile
 import unittest
 
-from mmclone.engine.export import ExportRunError, run_export
-from mmclone.engine.export_plan import ExportSettings, build_export_plan, resolve_settings
-from mmclone.engine.probe import probe
-from mmclone.model import Clip, Project, Transition
-from mmclone.model.track import TRACK_AUDIO
+from easy_movie_studio.engine.export import ExportRunError, run_export
+from easy_movie_studio.engine.export_plan import ExportSettings, build_export_plan, resolve_settings
+from easy_movie_studio.engine.probe import probe
+from easy_movie_studio.model import Clip, Project, Transition
+from easy_movie_studio.model.track import TRACK_AUDIO
 
 from .media_fixtures import MediaSet, needs_ffmpeg
 
@@ -190,14 +190,14 @@ class TitleCreditsCaptionExportTests(unittest.TestCase):
     def setUp(self):
         self.out_dir = tempfile.mkdtemp()
         self.addCleanup(shutil.rmtree, self.out_dir, ignore_errors=True)
-        from mmclone.engine import titles
+        from easy_movie_studio.engine import titles
         self.addCleanup(shutil.rmtree, titles.CACHE_DIR, ignore_errors=True)
 
     def out(self, name):
         return os.path.join(self.out_dir, name)
 
     def test_title_card_then_video(self):
-        from mmclone.engine.titles import render_title_png
+        from easy_movie_studio.engine.titles import render_title_png
         project = Project.new()
         settings = ExportSettings(width=160, height=120, fps=25, sample_rate=48000)
         card = render_title_png("My Movie", settings.width, settings.height)
@@ -211,7 +211,7 @@ class TitleCreditsCaptionExportTests(unittest.TestCase):
         self.assertEqual((info.video.width, info.video.height), (160, 120))
 
     def test_credits_card_at_the_end(self):
-        from mmclone.engine.titles import render_title_png
+        from easy_movie_studio.engine.titles import render_title_png
         project = Project.new()
         settings = ExportSettings(width=160, height=120, fps=25, sample_rate=48000)
         project.main_track.add_clip(Clip.from_video(self.media.video_av, 2.0))
@@ -249,7 +249,7 @@ class TitleCreditsCaptionExportTests(unittest.TestCase):
         self.assertTrue(os.path.isfile(path))
 
     def test_full_movie_title_captioned_clip_and_credits(self):
-        from mmclone.engine.titles import render_title_png
+        from easy_movie_studio.engine.titles import render_title_png
         project = Project.new()
         settings = ExportSettings(width=160, height=120, fps=25, sample_rate=48000)
         title_card = render_title_png("Family Trip", settings.width, settings.height)
@@ -317,7 +317,7 @@ class OverlayCompositingVisualTests(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        from mmclone.engine.tools import find_ffmpeg, run_tool
+        from easy_movie_studio.engine.tools import find_ffmpeg, run_tool
         cls.ffmpeg = find_ffmpeg()
         cls.dir = tempfile.mkdtemp()
         cls.red = os.path.join(cls.dir, "red.mp4")
@@ -339,7 +339,7 @@ class OverlayCompositingVisualTests(unittest.TestCase):
         self.addCleanup(shutil.rmtree, self.out_dir, ignore_errors=True)
 
     def sample_pixel(self, video_path, time, x, y):
-        from mmclone.engine.thumbnails import extract_frame_png
+        from easy_movie_studio.engine.thumbnails import extract_frame_png
         data = extract_frame_png(video_path, time, 240)
         from PIL import Image
         import io
@@ -450,7 +450,7 @@ class PanZoomVisualTests(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        from mmclone.engine.tools import find_ffmpeg, run_tool
+        from easy_movie_studio.engine.tools import find_ffmpeg, run_tool
         cls.ffmpeg = find_ffmpeg()
         cls.dir = tempfile.mkdtemp()
 
@@ -495,7 +495,7 @@ class PanZoomVisualTests(unittest.TestCase):
         self.addCleanup(shutil.rmtree, self.out_dir, ignore_errors=True)
 
     def corner_pixel(self, video_path, time):
-        from mmclone.engine.thumbnails import extract_frame_png
+        from easy_movie_studio.engine.thumbnails import extract_frame_png
         from PIL import Image
         import io
         data = extract_frame_png(video_path, time, 240)
@@ -507,7 +507,7 @@ class PanZoomVisualTests(unittest.TestCase):
         # enough to cross the left/right color boundary (the crop window is still wide
         # relative to how far it can slide) -- the center point travels much further
         # across the source per pixel of output, so it's the reliable place to sample.
-        from mmclone.engine.thumbnails import extract_frame_png
+        from easy_movie_studio.engine.thumbnails import extract_frame_png
         from PIL import Image
         import io
         data = extract_frame_png(video_path, time, 240)

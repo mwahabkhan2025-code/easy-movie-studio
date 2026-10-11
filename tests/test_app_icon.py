@@ -19,7 +19,7 @@ class AppIconTests(unittest.TestCase):
         cls.app = QApplication.instance() or QApplication([])
 
     def test_icon_has_multiple_non_null_sizes(self):
-        from mmclone.ui.icons import app_icon
+        from easy_movie_studio.ui.icons import app_icon
         icon = app_icon()
         sizes = icon.availableSizes()
         self.assertGreaterEqual(len(sizes), 5)
@@ -27,7 +27,7 @@ class AppIconTests(unittest.TestCase):
             self.assertFalse(icon.pixmap(size).isNull())
 
     def test_icon_is_cached(self):
-        from mmclone.ui.icons import app_icon
+        from easy_movie_studio.ui.icons import app_icon
         self.assertIs(app_icon(), app_icon())
 
 

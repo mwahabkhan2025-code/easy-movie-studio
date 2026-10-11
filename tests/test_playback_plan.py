@@ -1,8 +1,8 @@
 import unittest
 
-from mmclone.engine.playback_plan import (build_segments, clamp_time, segment_index_at,
+from easy_movie_studio.engine.playback_plan import (build_segments, clamp_time, segment_index_at,
                                           signature, step_time, total_duration)
-from mmclone.model import Clip, Track, Transition
+from easy_movie_studio.model import Clip, Track, Transition
 
 
 def make_track(*durations, speeds=None):

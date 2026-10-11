@@ -1,10 +1,10 @@
 import os
 import unittest
 
-from mmclone.engine.importer import (expand_paths, import_media, insert_position, nearest_aspect,
+from easy_movie_studio.engine.importer import (expand_paths, import_media, insert_position, nearest_aspect,
                                      nearest_fps, scan_media, suggest_settings)
-from mmclone.engine.probe import probe
-from mmclone.model import Clip, Track
+from easy_movie_studio.engine.probe import probe
+from easy_movie_studio.model import Clip, Track
 
 from .media_fixtures import MediaSet, needs_ffmpeg
 

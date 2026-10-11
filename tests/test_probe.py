@@ -1,9 +1,9 @@
 import json
 import unittest
 
-from mmclone.engine.probe import (ProbeError, classify, parse_ffmpeg_info, parse_ffprobe_json,
+from easy_movie_studio.engine.probe import (ProbeError, classify, parse_ffmpeg_info, parse_ffprobe_json,
                                   probe)
-from mmclone.engine.tools import find_ffprobe
+from easy_movie_studio.engine.tools import find_ffprobe
 
 from .media_fixtures import MediaSet, needs_ffmpeg
 

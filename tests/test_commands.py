@@ -1,9 +1,9 @@
 import unittest
 
-from mmclone.commands import (AddClipsCommand, MoveClipCommand, RemoveClipsCommand,
+from easy_movie_studio.commands import (AddClipsCommand, MoveClipCommand, RemoveClipsCommand,
                               RotateClipsCommand, SetAspectCommand, SplitClipCommand,
                               TrimClipCommand, UndoStack)
-from mmclone.model import Clip, Project, Track
+from easy_movie_studio.model import Clip, Project, Track
 
 
 def track_with(*durations):
@@ -234,7 +234,7 @@ if __name__ == "__main__":
 
 class SetClipFieldCommandTests(unittest.TestCase):
     def test_set_effect_on_several_clips_and_undo(self):
-        from mmclone.commands import SetClipFieldCommand
+        from easy_movie_studio.commands import SetClipFieldCommand
         track = track_with(4, 4, 4)
         ids = [c.id for c in track.clips]
         command = SetClipFieldCommand(track, ids[:2], "effect", "sepia")
@@ -244,7 +244,7 @@ class SetClipFieldCommandTests(unittest.TestCase):
         self.assertEqual([c.effect for c in track.clips], [None, None, None])
 
     def test_set_brightness_and_undo_restores_per_clip_values(self):
-        from mmclone.commands import SetClipFieldCommand
+        from easy_movie_studio.commands import SetClipFieldCommand
         track = track_with(4, 4)
         track.clips[1].update(brightness=0.3)
         ids = [c.id for c in track.clips]
@@ -255,7 +255,7 @@ class SetClipFieldCommandTests(unittest.TestCase):
         self.assertEqual([c.brightness for c in track.clips], [0.0, 0.3])
 
     def test_invalid_value_leaves_nothing_changed(self):
-        from mmclone.commands import SetClipFieldCommand
+        from easy_movie_studio.commands import SetClipFieldCommand
         track = track_with(4)
         command = SetClipFieldCommand(track, [track.clips[0].id], "brightness", 5.0)
         with self.assertRaises(ValueError):
@@ -265,7 +265,7 @@ class SetClipFieldCommandTests(unittest.TestCase):
 
 class SetTransitionCommandTests(unittest.TestCase):
     def test_set_and_undo(self):
-        from mmclone.commands import SetTransitionCommand
+        from easy_movie_studio.commands import SetTransitionCommand
         track = track_with(4, 6)
         clip_id = track.clips[1].id
         command = SetTransitionCommand(track, [clip_id], "fade", 1.5)
@@ -276,8 +276,8 @@ class SetTransitionCommandTests(unittest.TestCase):
         self.assertIsNone(track.clips[1].transition_in)
 
     def test_clearing_a_transition(self):
-        from mmclone.commands import SetTransitionCommand
-        from mmclone.model import Transition
+        from easy_movie_studio.commands import SetTransitionCommand
+        from easy_movie_studio.model import Transition
         track = track_with(4, 6)
         track.clips[1].transition_in = Transition("dissolve", 2.0)
         command = SetTransitionCommand(track, [track.clips[1].id], None, 1.0)
@@ -287,7 +287,7 @@ class SetTransitionCommandTests(unittest.TestCase):
         self.assertEqual(track.clips[1].transition_in.name, "dissolve")
 
     def test_apply_to_several_clips(self):
-        from mmclone.commands import SetTransitionCommand
+        from easy_movie_studio.commands import SetTransitionCommand
         track = track_with(4, 4, 4)
         ids = [c.id for c in track.clips]
         command = SetTransitionCommand(track, ids, "wipeleft", 0.75)
@@ -296,7 +296,7 @@ class SetTransitionCommandTests(unittest.TestCase):
                             for c in track.clips))
 
     def test_stack_integration(self):
-        from mmclone.commands import SetTransitionCommand, UndoStack
+        from easy_movie_studio.commands import SetTransitionCommand, UndoStack
         track = track_with(4, 6)
         clip_id = track.clips[1].id
         stack = UndoStack()
@@ -310,7 +310,7 @@ class SetTransitionCommandTests(unittest.TestCase):
 
 class SetCaptionCommandTests(unittest.TestCase):
     def test_set_and_undo(self):
-        from mmclone.commands import SetCaptionCommand
+        from easy_movie_studio.commands import SetCaptionCommand
         track = track_with(5)
         clip_id = track.clips[0].id
         command = SetCaptionCommand(track, clip_id, "Hello", "top")
@@ -322,7 +322,7 @@ class SetCaptionCommandTests(unittest.TestCase):
                          ("", "bottom"))
 
     def test_stack_integration_clearing_a_caption(self):
-        from mmclone.commands import SetCaptionCommand, UndoStack
+        from easy_movie_studio.commands import SetCaptionCommand, UndoStack
         track = track_with(5)
         clip_id = track.clips[0].id
         track.clips[0].caption_text = "Existing"
@@ -335,7 +335,7 @@ class SetCaptionCommandTests(unittest.TestCase):
 
 class SetAudioMixCommandTests(unittest.TestCase):
     def test_set_and_undo(self):
-        from mmclone.commands import SetAudioMixCommand
+        from easy_movie_studio.commands import SetAudioMixCommand
         project = Project.new()
         command = SetAudioMixCommand(project, music_volume=0.4, video_volume=1.2,
                                      duck_music=True)
@@ -346,7 +346,7 @@ class SetAudioMixCommandTests(unittest.TestCase):
         self.assertEqual((s.music_volume, s.video_volume, s.duck_music), (1.0, 1.0, False))
 
     def test_invalid_volume_rejected(self):
-        from mmclone.commands import SetAudioMixCommand
+        from easy_movie_studio.commands import SetAudioMixCommand
         project = Project.new()
         command = SetAudioMixCommand(project, music_volume=5.0, video_volume=1.0,
                                      duck_music=False)
@@ -356,7 +356,7 @@ class SetAudioMixCommandTests(unittest.TestCase):
 
 class SetClipStartCommandTests(unittest.TestCase):
     def test_set_and_undo(self):
-        from mmclone.commands import SetClipStartCommand
+        from easy_movie_studio.commands import SetClipStartCommand
         track = Track(kind="video", ripple=False)
         clip = Clip.from_video("a.mp4", 5.0, start=2.0)
         track.add_clip(clip)
@@ -367,7 +367,7 @@ class SetClipStartCommandTests(unittest.TestCase):
         self.assertEqual(clip.start, 2.0)
 
     def test_negative_start_rejected(self):
-        from mmclone.commands import SetClipStartCommand
+        from easy_movie_studio.commands import SetClipStartCommand
         track = Track(kind="video", ripple=False)
         clip = Clip.from_video("a.mp4", 5.0)
         track.add_clip(clip)
@@ -379,7 +379,7 @@ class SetClipStartCommandTests(unittest.TestCase):
 
 class SetOverlayCommandTests(unittest.TestCase):
     def test_set_and_undo(self):
-        from mmclone.commands import SetOverlayCommand
+        from easy_movie_studio.commands import SetOverlayCommand
         track = Track(kind="video", ripple=False)
         clip = Clip.from_video("a.mp4", 5.0)
         track.add_clip(clip)
@@ -392,7 +392,7 @@ class SetOverlayCommandTests(unittest.TestCase):
                          (0.75, 0.75, 0.35, 1.0))
 
     def test_invalid_scale_rejected(self):
-        from mmclone.commands import SetOverlayCommand
+        from easy_movie_studio.commands import SetOverlayCommand
         track = Track(kind="video", ripple=False)
         clip = Clip.from_video("a.mp4", 5.0)
         track.add_clip(clip)

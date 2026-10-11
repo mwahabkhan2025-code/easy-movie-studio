@@ -27,7 +27,7 @@ def build(output_path: str) -> None:
     from PySide6.QtCore import QBuffer, QByteArray, QIODevice, QSize
     from PySide6.QtWidgets import QApplication
 
-    from mmclone.ui.icons import app_icon
+    from easy_movie_studio.ui.icons import app_icon
 
     app = QApplication.instance() or QApplication([])
     icon = app_icon()

@@ -8,32 +8,32 @@ import os
 import shutil
 import unittest
 
-from mmclone.engine.export import run_export
-from mmclone.engine.proxy import (ProxyError, ProxyResolver, build_proxy_plan, needs_proxy,
+from easy_movie_studio.engine.export import run_export
+from easy_movie_studio.engine.proxy import (ProxyError, ProxyResolver, build_proxy_plan, needs_proxy,
                                   proxy_path_for, proxy_ready)
-from mmclone.engine.probe import probe
+from easy_movie_studio.engine.probe import probe
 
 from .media_fixtures import MediaSet, needs_ffmpeg
 
 
 class NeedsProxyTests(unittest.TestCase):
     def test_image_never_needs_a_proxy(self):
-        from mmclone.engine.media_info import MediaInfo
+        from easy_movie_studio.engine.media_info import MediaInfo
         info = MediaInfo(path="a.jpg", kind="image")
         self.assertFalse(needs_proxy(info))
 
     def test_video_with_no_video_stream_is_treated_as_not_needing_one(self):
-        from mmclone.engine.media_info import MediaInfo
+        from easy_movie_studio.engine.media_info import MediaInfo
         info = MediaInfo(path="a.mp4", kind="video", video=None)
         self.assertFalse(needs_proxy(info))
 
     def test_narrow_video_is_skipped(self):
-        from mmclone.engine.media_info import MediaInfo, VideoStream
+        from easy_movie_studio.engine.media_info import MediaInfo, VideoStream
         info = MediaInfo(path="a.mp4", kind="video", video=VideoStream(width=640, height=360))
         self.assertFalse(needs_proxy(info))
 
     def test_wide_video_needs_a_proxy(self):
-        from mmclone.engine.media_info import MediaInfo, VideoStream
+        from easy_movie_studio.engine.media_info import MediaInfo, VideoStream
         info = MediaInfo(path="a.mp4", kind="video", video=VideoStream(width=1920, height=1080))
         self.assertTrue(needs_proxy(info))
 
@@ -68,14 +68,14 @@ class BuildProxyPlanTests(unittest.TestCase):
         self.assertIn("ultrafast", plan.args)
 
     def test_image_source_raises(self):
-        from mmclone.engine.media_info import MediaInfo
+        from easy_movie_studio.engine.media_info import MediaInfo
         info = MediaInfo(path=self.media.photo, kind="image", video=None)
         with self.assertRaises(ProxyError):
             build_proxy_plan(self.media.photo, info)
 
 
 def _cache_dir():
-    from mmclone.engine.proxy import CACHE_DIR
+    from easy_movie_studio.engine.proxy import CACHE_DIR
     return CACHE_DIR
 
 
@@ -99,7 +99,7 @@ class ProxyIntegrationTests(unittest.TestCase):
         # media_fixtures' own clips are tiny (320px) -- smaller than the proxy's own
         # 640px target -- so a real "this is heavy footage" source is generated here,
         # the same way needs_proxy() would actually gate one in the real app.
-        from mmclone.engine.tools import find_ffmpeg, run_tool
+        from easy_movie_studio.engine.tools import find_ffmpeg, run_tool
         wide = os.path.join(self.media.dir, "wide.mp4")
         result = run_tool([find_ffmpeg(), "-v", "error", "-y", "-f", "lavfi", "-i",
                           "testsrc=duration=2:size=1280x720:rate=25", "-f", "lavfi", "-i",
@@ -130,8 +130,8 @@ class ProxyIntegrationTests(unittest.TestCase):
     def test_export_plan_for_the_real_project_is_unaffected_by_proxies(self):
         # Sanity check that nothing about engine.proxy touches the real export path --
         # it's a separate, throwaway project, never the one the user is editing.
-        from mmclone.engine.export_plan import ExportSettings, build_export_plan
-        from mmclone.model import Clip, Project
+        from easy_movie_studio.engine.export_plan import ExportSettings, build_export_plan
+        from easy_movie_studio.model import Clip, Project
         info = probe(self.media.video_av)
         run_export(build_proxy_plan(self.media.video_av, info))
         project = Project.new()

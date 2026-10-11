@@ -3,7 +3,7 @@ import shutil
 import tempfile
 import unittest
 
-from mmclone.recent import RecentProjects
+from easy_movie_studio.recent import RecentProjects
 
 
 class RecentProjectsTests(unittest.TestCase):

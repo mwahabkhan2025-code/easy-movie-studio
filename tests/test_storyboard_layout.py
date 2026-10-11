@@ -1,6 +1,6 @@
 import unittest
 
-from mmclone.ui.storyboard_layout import hit_test, layout_clips
+from easy_movie_studio.ui.storyboard_layout import hit_test, layout_clips
 
 
 class LayoutTests(unittest.TestCase):
@@ -39,25 +39,25 @@ if __name__ == "__main__":
 
 class CoverRectTests(unittest.TestCase):
     def test_wide_image_into_narrow_target_crops_sides(self):
-        from mmclone.ui.storyboard_layout import cover_source_rect
+        from easy_movie_studio.ui.storyboard_layout import cover_source_rect
         x, y, w, h = cover_source_rect(200, 100, 50, 50)
         self.assertEqual((y, h), (0.0, 100))
         self.assertEqual((x, w), (50.0, 100.0))
 
     def test_tall_image_into_wide_target_crops_top_and_bottom(self):
-        from mmclone.ui.storyboard_layout import cover_source_rect
+        from easy_movie_studio.ui.storyboard_layout import cover_source_rect
         x, y, w, h = cover_source_rect(100, 200, 100, 50)
         self.assertEqual((x, w), (0.0, 100))
         self.assertEqual((y, h), (75.0, 50.0))
 
     def test_degenerate_sizes_do_not_crash(self):
-        from mmclone.ui.storyboard_layout import cover_source_rect
+        from easy_movie_studio.ui.storyboard_layout import cover_source_rect
         self.assertEqual(len(cover_source_rect(0, 0, 10, 10)), 4)
 
 
 class EdgeHitTests(unittest.TestCase):
     def test_left_and_right_margins(self):
-        from mmclone.ui.storyboard_layout import edge_hit
+        from easy_movie_studio.ui.storyboard_layout import edge_hit
         rect = (100.0, 0.0, 50.0, 40.0)
         self.assertEqual(edge_hit(rect, 100.0), "left")
         self.assertEqual(edge_hit(rect, 106.0), "left")
@@ -66,18 +66,18 @@ class EdgeHitTests(unittest.TestCase):
         self.assertIsNone(edge_hit(rect, 125.0))
 
     def test_narrow_rect_margins_do_not_overlap_incorrectly(self):
-        from mmclone.ui.storyboard_layout import edge_hit
+        from easy_movie_studio.ui.storyboard_layout import edge_hit
         rect = (0.0, 0.0, 10.0, 40.0)
         self.assertEqual(edge_hit(rect, 2.0), "left")  # left check wins on tiny rects
 
 
 class InsertionIndexTests(unittest.TestCase):
     def test_empty(self):
-        from mmclone.ui.storyboard_layout import insertion_index
+        from easy_movie_studio.ui.storyboard_layout import insertion_index
         self.assertEqual(insertion_index([], 50, 10), 0)
 
     def test_single_row_before_between_after(self):
-        from mmclone.ui.storyboard_layout import insertion_index
+        from easy_movie_studio.ui.storyboard_layout import insertion_index
         rects, _ = layout_clips([10, 10, 10], 10, 1000, 50)  # widths 100 each, gap 8
         self.assertEqual(insertion_index(rects, 5, 20), 0)      # left of first
         self.assertEqual(insertion_index(rects, 60, 20), 0)     # left half of first block
@@ -88,8 +88,8 @@ class InsertionIndexTests(unittest.TestCase):
     def test_matches_track_move_clip_semantics(self):
         """insertion_index on the *other* clips' rects should equal the index
         move_clip needs to reproduce a drag to a given visual slot."""
-        from mmclone.model import Clip, Track
-        from mmclone.ui.storyboard_layout import insertion_index
+        from easy_movie_studio.model import Clip, Track
+        from easy_movie_studio.ui.storyboard_layout import insertion_index
 
         track = Track(kind="video")
         for i, d in enumerate((4, 4, 4, 4)):
@@ -105,7 +105,7 @@ class InsertionIndexTests(unittest.TestCase):
                          ["v1.mp4", "v2.mp4", "v3.mp4", "v0.mp4"])
 
     def test_second_row_point_lands_in_second_row(self):
-        from mmclone.ui.storyboard_layout import insertion_index
+        from easy_movie_studio.ui.storyboard_layout import insertion_index
         rects, _ = layout_clips([30, 30, 30], 10, 700, 50, gap=8, margin=12)  # third wraps
         self.assertGreater(rects[2][1], rects[0][1])  # sanity: row 2 is lower than row 1
         x_past_row2_item = rects[2][0] + rects[2][2] + 20
@@ -115,7 +115,7 @@ class InsertionIndexTests(unittest.TestCase):
         self.assertEqual(insertion_index(rects, x_past_row2_item, rects[2][1] + 500), 3)
 
     def test_point_above_everything_picks_nearest_row(self):
-        from mmclone.ui.storyboard_layout import insertion_index
+        from easy_movie_studio.ui.storyboard_layout import insertion_index
         rects, _ = layout_clips([10], 10, 1000, 50, margin=12)
         self.assertEqual(insertion_index(rects, 5, -100), 0)
 

@@ -4,7 +4,7 @@
 # PyInstaller installed -- `pip install pyinstaller`):
 #
 #     python scripts\build_icon.py            (once, or after the icon design changes)
-#     pyinstaller mmclone.spec
+#     pyinstaller easy_movie_studio.spec
 #
 # The result is dist\EasyMovieStudio\EasyMovieStudio.exe (a one-folder build, not --onefile --
 # a single-folder build starts much faster, which matters more for an editor the person
@@ -35,7 +35,7 @@ except Exception:
     imageio_ffmpeg_data = []
 
 a = Analysis(
-    ["mmclone/__main__.py"],
+    ["easy_movie_studio/__main__.py"],
     pathex=[root],
     binaries=[],
     datas=qtawesome_data + imageio_ffmpeg_data,

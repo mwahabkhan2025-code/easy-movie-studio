@@ -1,7 +1,7 @@
 import struct
 import unittest
 
-from mmclone.engine.thumbnails import ThumbnailError, extract_frame_png
+from easy_movie_studio.engine.thumbnails import ThumbnailError, extract_frame_png
 
 from .media_fixtures import MediaSet, needs_ffmpeg
 

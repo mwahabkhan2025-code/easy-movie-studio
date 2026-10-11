@@ -1,10 +1,10 @@
 import unittest
 
-from mmclone.engine.media_info import AudioStream, MediaInfo, VideoStream
-from mmclone.engine.probe import probe
-from mmclone.engine.properties import (aspect_text, compare_with_project, container_label,
+from easy_movie_studio.engine.media_info import AudioStream, MediaInfo, VideoStream
+from easy_movie_studio.engine.probe import probe
+from easy_movie_studio.engine.properties import (aspect_text, compare_with_project, container_label,
                                        describe, format_bitrate, format_size, sections_to_text)
-from mmclone.model import Clip, ProjectSettings, Transition
+from easy_movie_studio.model import Clip, ProjectSettings, Transition
 
 from .media_fixtures import MediaSet, needs_ffmpeg
 

@@ -1,11 +1,11 @@
-"""Tests for mmclone/settings.py: app-wide preferences storage."""
+"""Tests for easy_movie_studio/settings.py: app-wide preferences storage."""
 
 import json
 import os
 import tempfile
 import unittest
 
-from mmclone.settings import AppSettings, SettingsStore
+from easy_movie_studio.settings import AppSettings, SettingsStore
 
 
 class AppSettingsValidationTests(unittest.TestCase):

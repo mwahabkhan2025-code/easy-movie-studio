@@ -21,8 +21,8 @@ class PlaybackProxyResolverTests(unittest.TestCase):
         cls.app = QApplication.instance() or QApplication([])
 
     def test_resolver_is_consulted_for_a_video_clip(self):
-        from mmclone.model import Clip, Project
-        from mmclone.ui.playback import PlaybackController
+        from easy_movie_studio.model import Clip, Project
+        from easy_movie_studio.ui.playback import PlaybackController
         calls = []
 
         def resolver(source):
@@ -38,8 +38,8 @@ class PlaybackProxyResolverTests(unittest.TestCase):
         self.assertIn("missing.mp4", calls)
 
     def test_resolver_exception_falls_back_to_the_original_source(self):
-        from mmclone.model import Clip, Project
-        from mmclone.ui.playback import PlaybackController
+        from easy_movie_studio.model import Clip, Project
+        from easy_movie_studio.ui.playback import PlaybackController
 
         def bad_resolver(source):
             raise RuntimeError("boom")
@@ -57,8 +57,8 @@ class PlaybackProxyResolverTests(unittest.TestCase):
         self.assertIn("missing.mp4", messages[0])  # the real source, not a mangled proxy path
 
     def test_no_resolver_set_plays_the_original(self):
-        from mmclone.model import Clip, Project
-        from mmclone.ui.playback import PlaybackController
+        from easy_movie_studio.model import Clip, Project
+        from easy_movie_studio.ui.playback import PlaybackController
         player = PlaybackController()
         self.addCleanup(player.deleteLater)
         project = Project.new()
@@ -70,7 +70,7 @@ class PlaybackProxyResolverTests(unittest.TestCase):
 class MainWindowProxyWiringTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        from mmclone.ui.theme import stylesheet
+        from easy_movie_studio.ui.theme import stylesheet
         cls.app = QApplication.instance() or QApplication([])
         cls.app.setStyle("Fusion")
         cls.app.setStyleSheet(stylesheet())
@@ -78,9 +78,9 @@ class MainWindowProxyWiringTests(unittest.TestCase):
     def setUp(self):
         import shutil
         import tempfile
-        from mmclone.demo import demo_project
-        from mmclone.recent import RecentProjects
-        from mmclone.ui.main_window import MainWindow
+        from easy_movie_studio.demo import demo_project
+        from easy_movie_studio.recent import RecentProjects
+        from easy_movie_studio.ui.main_window import MainWindow
         self.tmp = tempfile.mkdtemp()
         self.addCleanup(shutil.rmtree, self.tmp, ignore_errors=True)
         self.window = MainWindow(demo_project(), RecentProjects(os.path.join(self.tmp, "r.json")),
@@ -110,7 +110,7 @@ class MainWindowProxyWiringTests(unittest.TestCase):
 
     def test_enabling_with_heavy_media_kicks_off_a_background_build(self):
         from unittest import mock
-        from mmclone.engine.media_info import MediaInfo, VideoStream
+        from easy_movie_studio.engine.media_info import MediaInfo, VideoStream
         self.window.media["heavy.mp4"] = MediaInfo(path="heavy.mp4", kind="video", duration=5.0,
                                                     video=VideoStream(width=1920, height=1080))
         with mock.patch.object(self.window.tasks, "submit") as submit:

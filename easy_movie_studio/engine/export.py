@@ -49,7 +49,7 @@ def run_export(plan: ExportPlan, on_progress: Optional[Callable[[float], None]] 
     ffmpeg = find_ffmpeg()
     if not ffmpeg:
         raise ExportRunError("FFmpeg was not found. Install the requirements or set "
-                             "MMCLONE_FFMPEG_DIR.")
+                             "EASY_MOVIE_STUDIO_FFMPEG_DIR.")
     out_dir = os.path.dirname(plan.output_path)
     if out_dir:
         os.makedirs(out_dir, exist_ok=True)

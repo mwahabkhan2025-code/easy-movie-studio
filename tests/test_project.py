@@ -4,7 +4,7 @@ import shutil
 import tempfile
 import unittest
 
-from mmclone.model import (Clip, Project, ProjectFormatError, Transition, FORMAT_VERSION)
+from easy_movie_studio.model import (Clip, Project, ProjectFormatError, Transition, FORMAT_VERSION)
 
 
 class ProjectTests(unittest.TestCase):

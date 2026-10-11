@@ -10,10 +10,10 @@ import shutil
 import tempfile
 import unittest
 
-from mmclone.engine.export import run_export
-from mmclone.engine.export_plan import ExportError
-from mmclone.engine.file_tools import build_compress_plan, build_extract_audio_plan
-from mmclone.engine.probe import probe
+from easy_movie_studio.engine.export import run_export
+from easy_movie_studio.engine.export_plan import ExportError
+from easy_movie_studio.engine.file_tools import build_compress_plan, build_extract_audio_plan
+from easy_movie_studio.engine.probe import probe
 
 from .media_fixtures import MediaSet, needs_ffmpeg
 

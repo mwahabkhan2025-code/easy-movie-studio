@@ -1,6 +1,6 @@
 """Locating and running the FFmpeg command-line tools.
 
-Search order: the folder in the MMCLONE_FFMPEG_DIR environment variable, then the
+Search order: the folder in the EASY_MOVIE_STUDIO_FFMPEG_DIR environment variable, then the
 folder the app itself is running from (so dropping ffmpeg.exe/ffprobe.exe next to a
 packaged EasyMovieStudio.exe just works, with no environment variable to set), then PATH,
 then the ffmpeg binary bundled with the ``imageio-ffmpeg`` package. Note that
@@ -36,7 +36,7 @@ def _app_dir() -> Optional[str]:
 
 def _search_dirs() -> Sequence[str]:
     dirs = []
-    env_dir = os.environ.get("MMCLONE_FFMPEG_DIR")
+    env_dir = os.environ.get("EASY_MOVIE_STUDIO_FFMPEG_DIR")
     if env_dir:
         dirs.append(env_dir)
     app_dir = _app_dir()

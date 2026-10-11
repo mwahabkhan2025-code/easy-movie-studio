@@ -1,6 +1,6 @@
 import unittest
 
-from mmclone.model import Clip, Transition
+from easy_movie_studio.model import Clip, Transition
 
 
 class ClipTests(unittest.TestCase):

@@ -1,6 +1,6 @@
 import unittest
 
-from mmclone.util import format_time
+from easy_movie_studio.util import format_time
 
 
 class FormatTimeTests(unittest.TestCase):

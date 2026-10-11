@@ -29,9 +29,9 @@ MIT -- see [LICENSE](LICENSE).
 
 ## Run
 
-    python -m mmclone --demo          # window with a made-up project (select a clip to see Video Tools)
-    python -m mmclone                 # empty project
-    python -m mmclone --demo --screenshots shots   # save a PNG of every tab + File menu, then quit
+    python -m easy_movie_studio --demo          # window with a made-up project (select a clip to see Video Tools)
+    python -m easy_movie_studio                 # empty project
+    python -m easy_movie_studio --demo --screenshots shots   # save a PNG of every tab + File menu, then quit
 
 ## Test
 
@@ -43,17 +43,17 @@ MIT -- see [LICENSE](LICENSE).
 
     pip install pyinstaller          # already in requirements-dev.txt
     python scripts\build_icon.py     # once, or whenever the app icon design changes
-    pyinstaller mmclone.spec
+    pyinstaller easy_movie_studio.spec
 
 This produces `dist\EasyMovieStudio\EasyMovieStudio.exe` -- a one-folder build (faster
 to start than a single-file `--onefile` build, which matters more for an editor kept
-open all session than a smaller installer does). `mmclone.spec` bundles qtawesome's
+open all session than a smaller installer does). `easy_movie_studio.spec` bundles qtawesome's
 icon font and the `ffmpeg.exe` that ships inside `imageio-ffmpeg`, so the folder runs on
 a machine with nothing else installed. That bundled FFmpeg build is minimal, though (see "FFmpeg" below) -- for the best
 results, drop a full FFmpeg build's `ffmpeg.exe` and `ffprobe.exe` straight into the
 `dist\EasyMovieStudio` folder, next to `EasyMovieStudio.exe`. No environment variable or
 setup step needed for that to be picked up -- the app's own folder is searched
-automatically (right after `MMCLONE_FFMPEG_DIR`, before PATH), specifically so a
+automatically (right after `EASY_MOVIE_STUDIO_FFMPEG_DIR`, before PATH), specifically so a
 packaged build can be made complete by just adding two files. Distribute the whole
 `dist\EasyMovieStudio` folder (zipped, or wrapped in an installer with a tool like Inno
 Setup) -- `EasyMovieStudio.exe` on its own is missing its PySide6/FFmpeg/font payload.
@@ -220,13 +220,13 @@ Setup) -- `EasyMovieStudio.exe` on its own is missing its PySide6/FFmpeg/font pa
     bar for the batch (today it's a status-bar message while it runs).
 - Phase 10 (done): polish -- packaging, crash hardening, preferences, autosave. This
   closes out the planned roadmap; `1.0.0` is the first feature-complete release.
-  - **Packaging**: a PyInstaller spec (`mmclone.spec`) builds a one-folder, console-less
+  - **Packaging**: a PyInstaller spec (`easy_movie_studio.spec`) builds a one-folder, console-less
     `MovieStudio` app (`scripts/build_icon.py` generates its multi-resolution `.ico`
     first). Drop `ffmpeg.exe`/`ffprobe.exe` into the build folder and the app finds them
     automatically -- no environment variable needed -- because a packaged `.exe` now
     searches its own folder as part of `engine/tools.py`'s normal lookup order. See
     "Packaging (a standalone .exe)" below for the exact steps.
-  - **Crash hardening**: a global exception hook (`mmclone/crashlog.py`) catches any
+  - **Crash hardening**: a global exception hook (`easy_movie_studio/crashlog.py`) catches any
     exception that would otherwise silently kill a packaged, console-less `.exe`. It
     writes a timestamped log (app name/version, Python version, platform, full
     traceback) to a per-platform log folder and shows a plain-language dialog with the
@@ -234,12 +234,12 @@ Setup) -- `EasyMovieStudio.exe` on its own is missing its PySide6/FFmpeg/font pa
   - **Options dialog** (File menu > Options): default export preset, default project
     folder, an FFmpeg folder override (for pointing at a specific build), and the
     preview-proxy width threshold. Persisted as a small JSON file
-    (`mmclone/settings.py`, same storage pattern as the recent-projects list) and
+    (`easy_movie_studio/settings.py`, same storage pattern as the recent-projects list) and
     applied live -- the FFmpeg override takes effect immediately via the same
-    `MMCLONE_FFMPEG_DIR` environment variable `engine/tools.py` already checks first.
+    `EASY_MOVIE_STUDIO_FFMPEG_DIR` environment variable `engine/tools.py` already checks first.
   - **Autosave / crash recovery**: while there are unsaved changes, a background copy
     of the project is written every 60 seconds to a cache folder
-    (`mmclone/autosave.py`) -- separate from the project file chosen with Save/Save As,
+    (`easy_movie_studio/autosave.py`) -- separate from the project file chosen with Save/Save As,
     and never touching it. The copy is cleared after a real save or a clean exit, so it
     only ever lingers after a crash or a kill; the next launch offers to recover it.
   - Recent-projects storage (`recent.py`) was already robust from earlier phases
@@ -264,15 +264,15 @@ Setup) -- `EasyMovieStudio.exe` on its own is missing its PySide6/FFmpeg/font pa
 ## FFmpeg
 
 `imageio-ffmpeg` bundles `ffmpeg` but not `ffprobe`. Media info therefore uses `ffprobe` when it is
-found (folder in MMCLONE_FFMPEG_DIR, then PATH) and otherwise parses the output of `ffmpeg -i`.
+found (folder in EASY_MOVIE_STUDIO_FFMPEG_DIR, then PATH) and otherwise parses the output of `ffmpeg -i`.
 Both paths are tested. For the best experience install a full FFmpeg build
 (e.g. gyan.dev "full") and put it on PATH; it also adds the stabilization filter used later.
 
 ## Layout
 
-    mmclone/model/   data model, no GUI code (Clip, Track, Project, paths)
-    mmclone/engine/  FFmpeg tools, probe, thumbnails, importer, properties (no Qt)
-    mmclone/ui/      ribbon_spec.py (declarative ribbon), ribbon.py, main_window.py, theme.py ...
+    easy_movie_studio/model/   data model, no GUI code (Clip, Track, Project, paths)
+    easy_movie_studio/engine/  FFmpeg tools, probe, thumbnails, importer, properties (no Qt)
+    easy_movie_studio/ui/      ribbon_spec.py (declarative ribbon), ribbon.py, main_window.py, theme.py ...
     tests/           unit tests (unittest style; pytest runs them too)
 
 ## Model notes

@@ -15,7 +15,7 @@ import tempfile
 from functools import lru_cache
 from typing import List, Optional, Sequence, Tuple
 
-CACHE_DIR = os.path.join(tempfile.gettempdir(), "mmclone_titles")
+CACHE_DIR = os.path.join(tempfile.gettempdir(), "easy_movie_studio_titles")
 
 # Searched in order; the first that exists on this machine is used. Covers common
 # Windows fonts, common Linux fonts, and the fonts bundled with this app's skills

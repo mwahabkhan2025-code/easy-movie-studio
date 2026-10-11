@@ -1,6 +1,6 @@
 import unittest
 
-from mmclone.ui.theme import COLORS, stylesheet
+from easy_movie_studio.ui.theme import COLORS, stylesheet
 
 
 class ThemeTests(unittest.TestCase):

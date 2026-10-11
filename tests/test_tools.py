@@ -1,4 +1,4 @@
-"""Tests for engine/tools.py's FFmpeg/ffprobe search order: MMCLONE_FFMPEG_DIR, then
+"""Tests for engine/tools.py's FFmpeg/ffprobe search order: EASY_MOVIE_STUDIO_FFMPEG_DIR, then
 the packaged app's own folder (when frozen), then PATH, then imageio-ffmpeg's bundled
 binary. Each layer is tested in isolation with mocks, since depending on the real
 environment's actual ffmpeg install would make the test non-deterministic."""
@@ -10,7 +10,7 @@ import tempfile
 import unittest
 from unittest import mock
 
-from mmclone.engine import tools
+from easy_movie_studio.engine import tools
 
 
 class FindToolSearchOrderTests(unittest.TestCase):
@@ -20,7 +20,7 @@ class FindToolSearchOrderTests(unittest.TestCase):
         self.env_patcher = mock.patch.dict(os.environ, {}, clear=False)
         self.env_patcher.start()
         self.addCleanup(self.env_patcher.stop)
-        os.environ.pop("MMCLONE_FFMPEG_DIR", None)
+        os.environ.pop("EASY_MOVIE_STUDIO_FFMPEG_DIR", None)
 
     def touch(self, *parts) -> str:
         path = os.path.join(self.dir, *parts)
@@ -33,7 +33,7 @@ class FindToolSearchOrderTests(unittest.TestCase):
         env_dir = os.path.join(self.dir, "envdir")
         os.makedirs(env_dir)
         expected = self.touch("envdir", "ffmpeg.exe")
-        os.environ["MMCLONE_FFMPEG_DIR"] = env_dir
+        os.environ["EASY_MOVIE_STUDIO_FFMPEG_DIR"] = env_dir
         with mock.patch.object(tools, "_app_dir", return_value=None), \
              mock.patch("shutil.which", return_value="/usr/bin/should-not-be-used"):
             self.assertEqual(tools.find_tool("ffmpeg"), expected)
@@ -42,7 +42,7 @@ class FindToolSearchOrderTests(unittest.TestCase):
         env_dir = os.path.join(self.dir, "envdir")
         os.makedirs(env_dir)
         expected = self.touch("envdir", "ffmpeg")  # no .exe, as on Linux/Mac
-        os.environ["MMCLONE_FFMPEG_DIR"] = env_dir
+        os.environ["EASY_MOVIE_STUDIO_FFMPEG_DIR"] = env_dir
         with mock.patch.object(tools, "_app_dir", return_value=None), \
              mock.patch("shutil.which", return_value=None):
             self.assertEqual(tools.find_tool("ffmpeg"), expected)
@@ -74,7 +74,7 @@ class FindToolSearchOrderTests(unittest.TestCase):
         os.makedirs(app_dir)
         expected = self.touch("envdir", "ffmpeg.exe")
         self.touch("appdir", "ffmpeg.exe")  # should be shadowed
-        os.environ["MMCLONE_FFMPEG_DIR"] = env_dir
+        os.environ["EASY_MOVIE_STUDIO_FFMPEG_DIR"] = env_dir
         with mock.patch.object(tools, "_app_dir", return_value=app_dir), \
              mock.patch("shutil.which", return_value=None):
             self.assertEqual(tools.find_tool("ffmpeg"), expected)

@@ -1,9 +1,9 @@
 import unittest
 
-from mmclone.engine.export_plan import (ExportError, ExportSettings, build_export_plan,
+from easy_movie_studio.engine.export_plan import (ExportError, ExportSettings, build_export_plan,
                                         estimate_output_bytes, even, resolve_settings)
-from mmclone.model import Clip, Project, Track, Transition
-from mmclone.model.track import TRACK_AUDIO
+from easy_movie_studio.model import Clip, Project, Track, Transition
+from easy_movie_studio.model.track import TRACK_AUDIO
 
 
 def args_to_text(args):
@@ -232,7 +232,7 @@ class CaptionFilterTests(unittest.TestCase):
     def setUp(self):
         import shutil
 
-        from mmclone.engine import titles
+        from easy_movie_studio.engine import titles
         self.addCleanup(shutil.rmtree, titles.CACHE_DIR, ignore_errors=True)
 
     def test_caption_adds_drawtext_via_textfile(self):
@@ -314,7 +314,7 @@ class AudioMixTests(unittest.TestCase):
         self.assertIn("volume=0.300", text)
 
     def test_duck_music_attenuates_music_but_not_video(self):
-        from mmclone.engine.export_plan import DUCK_ATTENUATION
+        from easy_movie_studio.engine.export_plan import DUCK_ATTENUATION
         project = sample_project()
         project.tracks[1].add_clip(Clip.from_audio("music.mp3", 10.0))
         settings = settings_for(project)
@@ -336,7 +336,7 @@ class OverlayTrackTests(unittest.TestCase):
     def setUp(self):
         import shutil
 
-        from mmclone.engine import titles
+        from easy_movie_studio.engine import titles
         self.addCleanup(shutil.rmtree, titles.CACHE_DIR, ignore_errors=True)
 
     def make_project_with_overlay(self, **overlay_kwargs):
@@ -475,7 +475,7 @@ class PanZoomFilterTests(unittest.TestCase):
         self.assertIn("zoompan", text)
 
     def test_each_preset_produces_a_distinct_filter(self):
-        from mmclone.engine.export_plan import _pan_zoom_expressions
+        from easy_movie_studio.engine.export_plan import _pan_zoom_expressions
         names = ("zoom_in", "zoom_out", "pan_left", "pan_right", "pan_up", "pan_down", "auto")
         seen = set()
         for name in names:

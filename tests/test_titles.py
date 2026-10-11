@@ -2,7 +2,7 @@ import os
 import shutil
 import unittest
 
-from mmclone.engine.titles import (TitleRenderError, find_font_path, render_title_png,
+from easy_movie_studio.engine.titles import (TitleRenderError, find_font_path, render_title_png,
                                    resolve_background)
 
 
@@ -25,7 +25,7 @@ class ResolveBackgroundTests(unittest.TestCase):
 
 class RenderTitleTests(unittest.TestCase):
     def setUp(self):
-        from mmclone.engine import titles
+        from easy_movie_studio.engine import titles
         self.addCleanup(shutil.rmtree, titles.CACHE_DIR, ignore_errors=True)
 
     def test_renders_a_png_of_the_right_size(self):

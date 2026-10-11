@@ -6,15 +6,15 @@ trying it out and filing issues.
 
 ## Project layout
 
-    mmclone/model/   data model, no GUI code (Clip, Track, Project, paths)
-    mmclone/engine/  FFmpeg tools, probe, thumbnails, importer, properties (no Qt)
-    mmclone/ui/      ribbon_spec.py (declarative ribbon), ribbon.py, main_window.py, theme.py ...
-    mmclone/commands/  undoable command objects (the undo/redo stack)
+    easy_movie_studio/model/   data model, no GUI code (Clip, Track, Project, paths)
+    easy_movie_studio/engine/  FFmpeg tools, probe, thumbnails, importer, properties (no Qt)
+    easy_movie_studio/ui/      ribbon_spec.py (declarative ribbon), ribbon.py, main_window.py, theme.py ...
+    easy_movie_studio/commands/  undoable command objects (the undo/redo stack)
     tests/           unit + integration tests (unittest style; pytest runs them too)
     scripts/         one-off dev scripts (e.g. generating the app icon)
 
 The data model and engine packages are plain Python with no Qt dependency, so most of
-the logic can be tested without a display. UI code lives only under `mmclone/ui/`.
+the logic can be tested without a display. UI code lives only under `easy_movie_studio/ui/`.
 
 ## Setup
 
@@ -22,7 +22,7 @@ the logic can be tested without a display. UI code lives only under `mmclone/ui/
     .venv\Scripts\activate          # on Windows; `source .venv/bin/activate` on macOS/Linux
     pip install -r requirements-dev.txt
 
-A real FFmpeg/ffprobe install on PATH (or pointed at via `MMCLONE_FFMPEG_DIR`) makes
+A real FFmpeg/ffprobe install on PATH (or pointed at via `EASY_MOVIE_STUDIO_FFMPEG_DIR`) makes
 the integration tests meaningfully more thorough, but isn't required to get started --
 `imageio-ffmpeg` bundles a minimal `ffmpeg` binary automatically.
 
@@ -32,7 +32,7 @@ the integration tests meaningfully more thorough, but isn't required to get star
     # or, without pytest installed:
     python -m unittest discover -s tests -t .
 
-Please add or update tests for any change to `mmclone/model/` or `mmclone/engine/` --
+Please add or update tests for any change to `easy_movie_studio/model/` or `easy_movie_studio/engine/` --
 that logic is pure Python and cheap to test thoroughly. UI-level tests
 (`tests/test_*_ui.py`, suffix by convention) need a real PySide6 install and a display
 (or `QT_QPA_PLATFORM=offscreen`); they're skipped automatically when PySide6 isn't
@@ -51,7 +51,7 @@ available.
 
 Please include: your OS, Python version, the exact steps to reproduce, and -- if the
 app crashed -- the crash log it wrote (the dialog shown on crash names its location;
-see `mmclone/crashlog.py` for where that is per platform).
+see `easy_movie_studio/crashlog.py` for where that is per platform).
 
 ## Code style
 

@@ -1,4 +1,4 @@
-"""Entry point: ``python -m mmclone``.
+"""Entry point: ``python -m easy_movie_studio``.
 
 Options:
   --demo              start with a made-up project so the storyboard and the
@@ -19,7 +19,7 @@ from .model import Project
 
 
 def _parse(argv: Optional[Sequence[str]]) -> argparse.Namespace:
-    parser = argparse.ArgumentParser(prog="mmclone", description=f"{APP_NAME} {__version__}")
+    parser = argparse.ArgumentParser(prog="easy_movie_studio", description=f"{APP_NAME} {__version__}")
     parser.add_argument("--demo", action="store_true", help="start with a demo project")
     parser.add_argument("--open", metavar="FILE", help="open a project file")
     parser.add_argument("--screenshots", metavar="DIR", help="save screenshots and quit")

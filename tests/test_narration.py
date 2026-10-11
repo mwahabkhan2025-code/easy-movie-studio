@@ -7,7 +7,7 @@ import os
 import tempfile
 import unittest
 
-from mmclone.engine.narration import NarrationRecorder, RecordingError
+from easy_movie_studio.engine.narration import NarrationRecorder, RecordingError
 
 
 class AvailabilityTests(unittest.TestCase):

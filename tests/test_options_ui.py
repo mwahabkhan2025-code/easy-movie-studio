@@ -21,14 +21,14 @@ class OptionsDialogTests(unittest.TestCase):
         cls.app = QApplication.instance() or QApplication([])
 
     def make_dialog(self, settings=None):
-        from mmclone.settings import AppSettings
-        from mmclone.ui.options_dialog import OptionsDialog
+        from easy_movie_studio.settings import AppSettings
+        from easy_movie_studio.ui.options_dialog import OptionsDialog
         dialog = OptionsDialog(settings or AppSettings())
         self.addCleanup(dialog.deleteLater)
         return dialog
 
     def test_fields_start_at_the_given_settings(self):
-        from mmclone.settings import AppSettings
+        from easy_movie_studio.settings import AppSettings
         settings = AppSettings(default_export_preset="mobile", default_project_dir="/movies",
                                ffmpeg_dir="/opt/ffmpeg", proxy_min_width=1280)
         dialog = self.make_dialog(settings)
@@ -48,7 +48,7 @@ class OptionsDialogTests(unittest.TestCase):
     def test_browse_button_fills_in_the_chosen_folder(self):
         from unittest import mock
         dialog = self.make_dialog()
-        with mock.patch("mmclone.ui.options_dialog.QFileDialog.getExistingDirectory",
+        with mock.patch("easy_movie_studio.ui.options_dialog.QFileDialog.getExistingDirectory",
                         return_value="/chosen/folder"):
             dialog.project_dir_row._browse()
         self.assertEqual(dialog.project_dir_row.text(), "/chosen/folder")
@@ -58,7 +58,7 @@ class OptionsDialogTests(unittest.TestCase):
 class MainWindowOptionsWiringTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        from mmclone.ui.theme import stylesheet
+        from easy_movie_studio.ui.theme import stylesheet
         cls.app = QApplication.instance() or QApplication([])
         cls.app.setStyle("Fusion")
         cls.app.setStyleSheet(stylesheet())
@@ -66,20 +66,20 @@ class MainWindowOptionsWiringTests(unittest.TestCase):
     def setUp(self):
         import shutil
         import tempfile
-        from mmclone.demo import demo_project
-        from mmclone.recent import RecentProjects
-        from mmclone.settings import SettingsStore
-        from mmclone.ui.main_window import MainWindow
+        from easy_movie_studio.demo import demo_project
+        from easy_movie_studio.recent import RecentProjects
+        from easy_movie_studio.settings import SettingsStore
+        from easy_movie_studio.ui.main_window import MainWindow
         self.tmp = tempfile.mkdtemp()
         self.addCleanup(shutil.rmtree, self.tmp, ignore_errors=True)
-        self.addCleanup(os.environ.pop, "MMCLONE_FFMPEG_DIR", None)
+        self.addCleanup(os.environ.pop, "EASY_MOVIE_STUDIO_FFMPEG_DIR", None)
         self.store = SettingsStore(os.path.join(self.tmp, "settings.json"))
         self.window = MainWindow(demo_project(), RecentProjects(os.path.join(self.tmp, "r.json")),
                                  verify_media=False, settings_store=self.store)
         self.addCleanup(self.window.deleteLater)
 
     def test_window_loads_default_settings_on_start(self):
-        from mmclone.settings import AppSettings
+        from easy_movie_studio.settings import AppSettings
         self.assertEqual(self.window.settings, AppSettings())
 
     def test_file_options_command_is_routed_to_the_handler(self):
@@ -88,7 +88,7 @@ class MainWindowOptionsWiringTests(unittest.TestCase):
 
     def test_accepting_the_dialog_saves_and_applies_settings(self):
         from unittest import mock
-        from mmclone.ui.options_dialog import OptionsDialog
+        from easy_movie_studio.ui.options_dialog import OptionsDialog
 
         def fake_dialog(settings, parent=None):
             dialog = mock.Mock()
@@ -98,12 +98,12 @@ class MainWindowOptionsWiringTests(unittest.TestCase):
                 ffmpeg_dir="/opt/ffmpeg", proxy_min_width=1600)
             return dialog
 
-        with mock.patch("mmclone.ui.main_window.OptionsDialog", side_effect=fake_dialog):
+        with mock.patch("easy_movie_studio.ui.main_window.OptionsDialog", side_effect=fake_dialog):
             self.window.open_options_dialog()
 
         self.assertEqual(self.window.settings.default_export_preset, "hq")
         self.assertEqual(self.window.settings.proxy_min_width, 1600)
-        self.assertEqual(os.environ.get("MMCLONE_FFMPEG_DIR"), "/opt/ffmpeg")
+        self.assertEqual(os.environ.get("EASY_MOVIE_STUDIO_FFMPEG_DIR"), "/opt/ffmpeg")
         reloaded = self.store.load()
         self.assertEqual(reloaded.default_export_preset, "hq")
 
@@ -116,7 +116,7 @@ class MainWindowOptionsWiringTests(unittest.TestCase):
             dialog.exec.return_value = QDialog.DialogCode.Rejected
             return dialog
 
-        with mock.patch("mmclone.ui.main_window.OptionsDialog", side_effect=fake_dialog):
+        with mock.patch("easy_movie_studio.ui.main_window.OptionsDialog", side_effect=fake_dialog):
             self.window.open_options_dialog()
 
         self.assertEqual(self.window.settings, original)
@@ -125,7 +125,7 @@ class MainWindowOptionsWiringTests(unittest.TestCase):
     def test_save_movie_falls_back_to_the_default_preset_from_settings(self):
         from unittest import mock
         self.window.settings.update(default_export_preset="youtube")
-        with mock.patch("mmclone.ui.main_window.SaveMovieDialog") as dialog_cls:
+        with mock.patch("easy_movie_studio.ui.main_window.SaveMovieDialog") as dialog_cls:
             dialog_cls.return_value.exec.return_value = None
             self.window.open_save_movie_dialog()
         args, _ = dialog_cls.call_args

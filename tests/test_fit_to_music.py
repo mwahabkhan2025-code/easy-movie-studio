@@ -1,7 +1,7 @@
 import unittest
 
-from mmclone.engine.fit_to_music import compute_fit_to_music
-from mmclone.model import Clip, Project
+from easy_movie_studio.engine.fit_to_music import compute_fit_to_music
+from easy_movie_studio.model import Clip, Project
 
 
 def project_with(video_durations, music_duration=None):

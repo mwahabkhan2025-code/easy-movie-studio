@@ -21,7 +21,7 @@ from ..model.track import TRACK_AUDIO, TRACK_VIDEO, Track
 from .export_plan import ExportPlan, ExportSettings, build_export_plan, even
 from .media_info import MediaInfo
 
-CACHE_DIR = os.path.join(tempfile.gettempdir(), "mmclone_proxies")
+CACHE_DIR = os.path.join(tempfile.gettempdir(), "easy_movie_studio_proxies")
 PROXY_WIDTH = 640             # proxy target width; height keeps the source's aspect ratio
 PROXY_MIN_SOURCE_WIDTH = 960  # a clip already narrower than this plays smoothly -- skip it
 

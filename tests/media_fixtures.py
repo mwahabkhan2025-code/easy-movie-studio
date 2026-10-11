@@ -5,7 +5,7 @@ import shutil
 import tempfile
 import unittest
 
-from mmclone.engine.tools import find_ffmpeg, run_tool
+from easy_movie_studio.engine.tools import find_ffmpeg, run_tool
 
 FFMPEG = find_ffmpeg()
 needs_ffmpeg = unittest.skipUnless(FFMPEG, "FFmpeg not available")
@@ -23,7 +23,7 @@ class MediaSet:
     (160x90, 30 fps, 1 s), photo.jpg (200x100), tone.wav (1 s)."""
 
     def __init__(self):
-        self.dir = os.path.realpath(tempfile.mkdtemp(prefix="mmclone_test_"))
+        self.dir = os.path.realpath(tempfile.mkdtemp(prefix="easy_movie_studio_test_"))
         d = self.dir
         self.video_av = _make(["-f", "lavfi", "-i", "testsrc=duration=2:size=320x240:rate=25",
                                "-f", "lavfi", "-i", "sine=frequency=440:duration=2:sample_rate=44100",

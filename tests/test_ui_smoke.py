@@ -18,15 +18,15 @@ except ImportError:  # pragma: no cover
 class MainWindowSmokeTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        from mmclone.ui.theme import stylesheet
+        from easy_movie_studio.ui.theme import stylesheet
         cls.app = QApplication.instance() or QApplication([])
         cls.app.setStyle("Fusion")
         cls.app.setStyleSheet(stylesheet())
 
     def setUp(self):
-        from mmclone.demo import demo_project
-        from mmclone.recent import RecentProjects
-        from mmclone.ui.main_window import MainWindow
+        from easy_movie_studio.demo import demo_project
+        from easy_movie_studio.recent import RecentProjects
+        from easy_movie_studio.ui.main_window import MainWindow
         self.tmp = tempfile.mkdtemp()
         self.addCleanup(shutil.rmtree, self.tmp, ignore_errors=True)
         self.window = MainWindow(demo_project(), RecentProjects(os.path.join(self.tmp, "r.json")))
@@ -65,7 +65,7 @@ class MainWindowSmokeTests(unittest.TestCase):
         self.assertTrue(self.window.ribbon.is_widget_enabled("home.rotate_left"))
 
     def test_empty_project_disables_media_buttons(self):
-        from mmclone.model import Project
+        from easy_movie_studio.model import Project
         self.window._install_project(Project.new(), None)
         self.assertFalse(self.window.ribbon.is_widget_enabled("home.select_all"))
         self.assertTrue(self.window.ribbon.is_widget_enabled("home.add_media"))
@@ -107,7 +107,7 @@ class ImportSmokeTests(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        from mmclone.ui.theme import stylesheet
+        from easy_movie_studio.ui.theme import stylesheet
         from .media_fixtures import FFMPEG, MediaSet
         if not FFMPEG:
             raise unittest.SkipTest("FFmpeg not available")
@@ -121,8 +121,8 @@ class ImportSmokeTests(unittest.TestCase):
         cls.media.cleanup()
 
     def setUp(self):
-        from mmclone.recent import RecentProjects
-        from mmclone.ui.main_window import MainWindow
+        from easy_movie_studio.recent import RecentProjects
+        from easy_movie_studio.ui.main_window import MainWindow
         self.tmp = tempfile.mkdtemp()
         self.addCleanup(shutil.rmtree, self.tmp, ignore_errors=True)
         self.window = MainWindow(recent=RecentProjects(os.path.join(self.tmp, "r.json")))
@@ -159,7 +159,7 @@ class ImportSmokeTests(unittest.TestCase):
         self.assertEqual(image.height(), 52)
 
     def test_properties_dialog_shows_details(self):
-        from mmclone.ui.properties_dialog import PropertiesDialog
+        from easy_movie_studio.ui.properties_dialog import PropertiesDialog
         self.import_and_wait([self.media.video_av])
         clip = self.window.project.main_track.clips[0]
         dialog = PropertiesDialog(clip.source, self.window.media[clip.source], clip,
@@ -170,7 +170,7 @@ class ImportSmokeTests(unittest.TestCase):
         self.assertTrue(dialog.copy_button.isEnabled())
 
     def test_properties_dialog_for_missing_file_explains_why(self):
-        from mmclone.ui.properties_dialog import PropertiesDialog
+        from easy_movie_studio.ui.properties_dialog import PropertiesDialog
         dialog = PropertiesDialog("/nowhere/gone.mp4", None, None,
                                   self.window.project.settings, "File not found")
         self.assertEqual(dialog.details_text().strip(), "")
@@ -178,13 +178,13 @@ class ImportSmokeTests(unittest.TestCase):
 
     def test_unreadable_files_are_reported_not_added(self):
         from unittest import mock
-        with mock.patch("mmclone.ui.main_window.QMessageBox.warning") as warning:
+        with mock.patch("easy_movie_studio.ui.main_window.QMessageBox.warning") as warning:
             self.import_and_wait([self.media.broken])
         self.assertEqual(self.window.project.main_track.clips, [])
         warning.assert_called_once()
 
     def test_opening_a_project_with_a_missing_file_flags_it(self):
-        from mmclone.demo import demo_project
+        from easy_movie_studio.demo import demo_project
         path = os.path.join(self.tmp, "p.mmproj")
         demo_project().save(path)
         self.window._open_path(path, already_confirmed=True)
@@ -198,7 +198,7 @@ class PlaybackSmokeTests(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        from mmclone.ui.theme import stylesheet
+        from easy_movie_studio.ui.theme import stylesheet
         from .media_fixtures import FFMPEG, MediaSet
         if not FFMPEG:
             raise unittest.SkipTest("FFmpeg not available")
@@ -212,8 +212,8 @@ class PlaybackSmokeTests(unittest.TestCase):
         cls.media.cleanup()
 
     def setUp(self):
-        from mmclone.recent import RecentProjects
-        from mmclone.ui.main_window import MainWindow
+        from easy_movie_studio.recent import RecentProjects
+        from easy_movie_studio.ui.main_window import MainWindow
         self.tmp = tempfile.mkdtemp()
         self.addCleanup(shutil.rmtree, self.tmp, ignore_errors=True)
         self.window = MainWindow(recent=RecentProjects(os.path.join(self.tmp, "r.json")))
@@ -296,15 +296,15 @@ class EditingSmokeTests(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        from mmclone.ui.theme import stylesheet
+        from easy_movie_studio.ui.theme import stylesheet
         cls.app = QApplication.instance() or QApplication([])
         cls.app.setStyle("Fusion")
         cls.app.setStyleSheet(stylesheet())
 
     def setUp(self):
-        from mmclone.demo import demo_project
-        from mmclone.recent import RecentProjects
-        from mmclone.ui.main_window import MainWindow
+        from easy_movie_studio.demo import demo_project
+        from easy_movie_studio.recent import RecentProjects
+        from easy_movie_studio.ui.main_window import MainWindow
         self.tmp = tempfile.mkdtemp()
         self.addCleanup(shutil.rmtree, self.tmp, ignore_errors=True)
         self.window = MainWindow(demo_project(), RecentProjects(os.path.join(self.tmp, "r.json")))
@@ -464,15 +464,15 @@ class EditingSmokeTests(unittest.TestCase):
 class AnimationsEffectsSmokeTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        from mmclone.ui.theme import stylesheet
+        from easy_movie_studio.ui.theme import stylesheet
         cls.app = QApplication.instance() or QApplication([])
         cls.app.setStyle("Fusion")
         cls.app.setStyleSheet(stylesheet())
 
     def setUp(self):
-        from mmclone.demo import demo_project
-        from mmclone.recent import RecentProjects
-        from mmclone.ui.main_window import MainWindow
+        from easy_movie_studio.demo import demo_project
+        from easy_movie_studio.recent import RecentProjects
+        from easy_movie_studio.ui.main_window import MainWindow
         self.tmp = tempfile.mkdtemp()
         self.addCleanup(shutil.rmtree, self.tmp, ignore_errors=True)
         self.window = MainWindow(demo_project(), RecentProjects(os.path.join(self.tmp, "r.json")))
@@ -536,7 +536,7 @@ class AnimationsEffectsSmokeTests(unittest.TestCase):
         self.assertEqual(self.track.duration, before)
 
     def test_transition_none_clears_it(self):
-        from mmclone.model import Transition
+        from easy_movie_studio.model import Transition
         second = self.track.clips[1]
         second.transition_in = Transition("fade", 1.0)
         self.window.storyboard.set_selection([second.id])
@@ -544,7 +544,7 @@ class AnimationsEffectsSmokeTests(unittest.TestCase):
         self.assertIsNone(second.transition_in)
 
     def test_duration_spinbox_updates_existing_transition_live(self):
-        from mmclone.model import Transition
+        from easy_movie_studio.model import Transition
         second = self.track.clips[1]
         second.transition_in = Transition("dissolve", 1.0)
         self.window.storyboard.set_selection([second.id])
@@ -584,7 +584,7 @@ class AnimationsEffectsSmokeTests(unittest.TestCase):
 class TitlesCaptionsCreditsMusicSmokeTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        from mmclone.ui.theme import stylesheet
+        from easy_movie_studio.ui.theme import stylesheet
         from .media_fixtures import FFMPEG, MediaSet
         if not FFMPEG:
             raise unittest.SkipTest("FFmpeg not available")
@@ -598,13 +598,13 @@ class TitlesCaptionsCreditsMusicSmokeTests(unittest.TestCase):
         cls.media.cleanup()
         import shutil
 
-        from mmclone.engine import titles
+        from easy_movie_studio.engine import titles
         shutil.rmtree(titles.CACHE_DIR, ignore_errors=True)
 
     def setUp(self):
-        from mmclone.demo import demo_project
-        from mmclone.recent import RecentProjects
-        from mmclone.ui.main_window import MainWindow
+        from easy_movie_studio.demo import demo_project
+        from easy_movie_studio.recent import RecentProjects
+        from easy_movie_studio.ui.main_window import MainWindow
         self.tmp = tempfile.mkdtemp()
         self.addCleanup(shutil.rmtree, self.tmp, ignore_errors=True)
         self.window = MainWindow(demo_project(), RecentProjects(os.path.join(self.tmp, "r.json")))
@@ -622,7 +622,7 @@ class TitlesCaptionsCreditsMusicSmokeTests(unittest.TestCase):
             self.addCleanup(p.stop)
 
     def test_add_title_inserts_a_card_at_the_start(self):
-        from mmclone.ui.title_dialogs import TitleDialog
+        from easy_movie_studio.ui.title_dialogs import TitleDialog
         self.accept_dialog(TitleDialog, ("My Movie", "Black", 3.0))
         before = len(self.track.clips)
         self.window.on_command("home.title")
@@ -636,7 +636,7 @@ class TitlesCaptionsCreditsMusicSmokeTests(unittest.TestCase):
         self.assertEqual(len(self.track.clips), before)
 
     def test_add_title_with_empty_text_is_refused(self):
-        from mmclone.ui.title_dialogs import TitleDialog
+        from easy_movie_studio.ui.title_dialogs import TitleDialog
         self.accept_dialog(TitleDialog, ("   ", "Black", 3.0))
         before = len(self.track.clips)
         self.window.on_command("home.title")
@@ -644,7 +644,7 @@ class TitlesCaptionsCreditsMusicSmokeTests(unittest.TestCase):
         self.assertIn("Enter some text", self.window.statusBar().currentMessage())
 
     def test_add_title_inserts_after_selection(self):
-        from mmclone.ui.title_dialogs import TitleDialog
+        from easy_movie_studio.ui.title_dialogs import TitleDialog
         first = self.track.clips[0]
         self.window.storyboard.set_selection([first.id])
         self.accept_dialog(TitleDialog, ("Chapter 2", "White", 2.0))
@@ -657,7 +657,7 @@ class TitlesCaptionsCreditsMusicSmokeTests(unittest.TestCase):
         self.assertIn("Select a single clip", self.window.statusBar().currentMessage())
 
     def test_add_caption_sets_and_undoes(self):
-        from mmclone.ui.title_dialogs import CaptionDialog
+        from easy_movie_studio.ui.title_dialogs import CaptionDialog
         clip = self.track.clips[0]
         self.window.storyboard.set_selection([clip.id])
         self.accept_dialog(CaptionDialog, ("At the lake", "top"))
@@ -668,7 +668,7 @@ class TitlesCaptionsCreditsMusicSmokeTests(unittest.TestCase):
         self.assertEqual(clip.caption_text, "")
 
     def test_add_credits_appends_at_the_end(self):
-        from mmclone.ui.title_dialogs import CreditsDialog
+        from easy_movie_studio.ui.title_dialogs import CreditsDialog
         lines = [["Directed by", "A. Tester"]]
         self.accept_dialog(CreditsDialog, (lines, "Black", 4.0))
         before = len(self.track.clips)
@@ -679,14 +679,14 @@ class TitlesCaptionsCreditsMusicSmokeTests(unittest.TestCase):
         self.assertEqual(new_clip.text_lines, lines)
 
     def test_add_credits_with_no_names_is_refused(self):
-        from mmclone.ui.title_dialogs import CreditsDialog
+        from easy_movie_studio.ui.title_dialogs import CreditsDialog
         self.accept_dialog(CreditsDialog, ([], "Black", 4.0))
         before = len(self.track.clips)
         self.window.on_command("home.credits.cast")
         self.assertEqual(len(self.track.clips), before)
 
     def test_title_and_credits_are_undoable_through_main_window_undo(self):
-        from mmclone.ui.title_dialogs import TitleDialog
+        from easy_movie_studio.ui.title_dialogs import TitleDialog
         self.accept_dialog(TitleDialog, ("Undo me", "Black", 2.0))
         self.window.on_command("home.title")
         self.assertTrue(self.window._dirty)
@@ -694,7 +694,7 @@ class TitlesCaptionsCreditsMusicSmokeTests(unittest.TestCase):
 
     def test_add_music_imports_onto_the_music_track(self):
         from unittest import mock
-        with mock.patch("mmclone.ui.main_window.QFileDialog.getOpenFileNames",
+        with mock.patch("easy_movie_studio.ui.main_window.QFileDialog.getOpenFileNames",
                         return_value=([self.media.tone], "")):
             self.window.add_music()
         music_track = next(t for t in self.window.project.tracks if t.kind == "audio")
@@ -704,7 +704,7 @@ class TitlesCaptionsCreditsMusicSmokeTests(unittest.TestCase):
 
     def test_add_music_twice_appends_sequentially(self):
         from unittest import mock
-        with mock.patch("mmclone.ui.main_window.QFileDialog.getOpenFileNames",
+        with mock.patch("easy_movie_studio.ui.main_window.QFileDialog.getOpenFileNames",
                         return_value=([self.media.tone], "")):
             self.window.add_music()
             self.window.add_music()
@@ -713,10 +713,10 @@ class TitlesCaptionsCreditsMusicSmokeTests(unittest.TestCase):
         self.assertEqual(music_track.clips[1].start, music_track.clips[0].duration)
 
     def test_storyboard_renders_a_title_clip_without_crashing(self):
-        from mmclone.engine.titles import render_title_png
+        from easy_movie_studio.engine.titles import render_title_png
         path = render_title_png("Preview", self.window.project.settings.width,
                                 self.window.project.settings.height)
-        from mmclone.model import Clip
+        from easy_movie_studio.model import Clip
         clip = Clip.from_title(path, 2.0, text="Preview")
         self.track.add_clip(clip, 0)
         self.window.storyboard.refresh()
@@ -727,7 +727,7 @@ class TitlesCaptionsCreditsMusicSmokeTests(unittest.TestCase):
 class AudioMixFitNarrationSmokeTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        from mmclone.ui.theme import stylesheet
+        from easy_movie_studio.ui.theme import stylesheet
         from .media_fixtures import FFMPEG, MediaSet
         if not FFMPEG:
             raise unittest.SkipTest("FFmpeg not available")
@@ -741,9 +741,9 @@ class AudioMixFitNarrationSmokeTests(unittest.TestCase):
         cls.media.cleanup()
 
     def setUp(self):
-        from mmclone.demo import demo_project
-        from mmclone.recent import RecentProjects
-        from mmclone.ui.main_window import MainWindow
+        from easy_movie_studio.demo import demo_project
+        from easy_movie_studio.recent import RecentProjects
+        from easy_movie_studio.ui.main_window import MainWindow
         self.tmp = tempfile.mkdtemp()
         self.addCleanup(shutil.rmtree, self.tmp, ignore_errors=True)
         self.window = MainWindow(demo_project(), RecentProjects(os.path.join(self.tmp, "r.json")))
@@ -760,7 +760,7 @@ class AudioMixFitNarrationSmokeTests(unittest.TestCase):
 
     # ---- audio mix --------------------------------------------------------------
     def test_audio_mix_dialog_updates_settings_and_is_undoable(self):
-        from mmclone.ui.audio_mix_dialog import AudioMixDialog
+        from easy_movie_studio.ui.audio_mix_dialog import AudioMixDialog
         self.accept_dialog(AudioMixDialog, (0.4, 1.3, True))
         self.window.on_command("project.audio_mix")
         s = self.window.project.settings
@@ -778,7 +778,7 @@ class AudioMixFitNarrationSmokeTests(unittest.TestCase):
             captured["args"] = (music_volume, video_volume, duck_music)
             QDialog.__init__(self_dialog, parent)
 
-        from mmclone.ui.audio_mix_dialog import AudioMixDialog
+        from easy_movie_studio.ui.audio_mix_dialog import AudioMixDialog
         with mock.patch.object(AudioMixDialog, "__init__", fake_init), \
              mock.patch.object(AudioMixDialog, "exec", return_value=0):
             self.window.on_command("project.audio_mix")
@@ -793,7 +793,7 @@ class AudioMixFitNarrationSmokeTests(unittest.TestCase):
         self.window.import_files([self.media.video_av])
         self.window.settle()
         music_track = next(t for t in self.window.project.tracks if t.kind == "audio")
-        from mmclone.model import Clip
+        from easy_movie_studio.model import Clip
         music_track.add_clip(Clip.from_audio(self.media.tone, 1.0))
         before = self.window.project.main_track.duration
         self.window.on_command("project.fit_music")
@@ -803,14 +803,14 @@ class AudioMixFitNarrationSmokeTests(unittest.TestCase):
 
     # ---- narration ----------------------------------------------------------------
     def test_narration_dialog_with_no_result_adds_nothing(self):
-        from mmclone.ui.narration_dialog import NarrationDialog
+        from easy_movie_studio.ui.narration_dialog import NarrationDialog
         from unittest import mock
         with mock.patch.object(NarrationDialog, "exec", return_value=0):
             self.window.on_command("home.narration")
         self.assertFalse(any(t.name == "Narration" for t in self.window.project.tracks))
 
     def test_narration_result_creates_a_narration_track(self):
-        from mmclone.ui.narration_dialog import NarrationDialog
+        from easy_movie_studio.ui.narration_dialog import NarrationDialog
         from unittest import mock
         with mock.patch.object(NarrationDialog, "exec", return_value=1), \
              mock.patch.object(NarrationDialog, "result_values",
@@ -824,7 +824,7 @@ class AudioMixFitNarrationSmokeTests(unittest.TestCase):
     def test_narration_recorder_reports_unavailable_in_this_environment(self):
         # not a mock -- this really exercises the no-hardware path, since this sandbox
         # genuinely has no PortAudio library
-        from mmclone.ui.narration_dialog import NarrationDialog
+        from easy_movie_studio.ui.narration_dialog import NarrationDialog
         dialog = NarrationDialog(parent=self.window)
         self.addCleanup(dialog.deleteLater)
         self.assertFalse(dialog.record_button.isEnabled())
@@ -834,7 +834,7 @@ class AudioMixFitNarrationSmokeTests(unittest.TestCase):
 class TimelineSmokeTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        from mmclone.ui.theme import stylesheet
+        from easy_movie_studio.ui.theme import stylesheet
         from .media_fixtures import FFMPEG, MediaSet
         if not FFMPEG:
             raise unittest.SkipTest("FFmpeg not available")
@@ -848,9 +848,9 @@ class TimelineSmokeTests(unittest.TestCase):
         cls.media.cleanup()
 
     def setUp(self):
-        from mmclone.demo import demo_project
-        from mmclone.recent import RecentProjects
-        from mmclone.ui.main_window import MainWindow
+        from easy_movie_studio.demo import demo_project
+        from easy_movie_studio.recent import RecentProjects
+        from easy_movie_studio.ui.main_window import MainWindow
         self.tmp = tempfile.mkdtemp()
         self.addCleanup(shutil.rmtree, self.tmp, ignore_errors=True)
         self.window = MainWindow(demo_project(), RecentProjects(os.path.join(self.tmp, "r.json")))
@@ -913,7 +913,7 @@ class TimelineSmokeTests(unittest.TestCase):
     # ---- repositioning on a non-ripple track -----------------------------------------
     def test_reposition_clip_is_undoable(self):
         music_track = next(t for t in self.window.project.tracks if t.kind == "audio")
-        from mmclone.model import Clip
+        from easy_movie_studio.model import Clip
         clip = Clip.from_audio(self.media.tone, 1.0, start=0.0)
         music_track.add_clip(clip)
         self.window.reposition_clip(clip.id, 5.0)
@@ -930,8 +930,8 @@ class TimelineSmokeTests(unittest.TestCase):
     def test_overlay_position_dialog_applies_and_undoes(self):
         from unittest import mock
 
-        from mmclone.model import Clip
-        from mmclone.ui.overlay_dialog import OverlayPositionDialog
+        from easy_movie_studio.model import Clip
+        from easy_movie_studio.ui.overlay_dialog import OverlayPositionDialog
         self.window.add_overlay_track()
         overlay_track = self.window.project.tracks[-1]
         clip = Clip.from_video(self.media.video_av, 2.0)
@@ -957,14 +957,14 @@ class TimelineSmokeTests(unittest.TestCase):
     def test_timeline_drag_snaps_to_another_clip_s_edge(self):
         self.window.add_overlay_track()
         overlay_track = self.window.project.tracks[-1]
-        from mmclone.model import Clip
+        from easy_movie_studio.model import Clip
         anchor = Clip.from_video(self.media.video_av, 2.0, start=5.0)
         dragged = Clip.from_video(self.media.video_silent, 1.0, start=0.0)
         overlay_track.add_clip(anchor)
         overlay_track.add_clip(dragged)
         self.window.toggle_view()
         timeline = self.window.timeline
-        from mmclone.ui.timeline_layout import time_to_x
+        from easy_movie_studio.ui.timeline_layout import time_to_x
         press_x = time_to_x(0.5, timeline.pps)  # somewhere inside the dragged clip
         timeline._drag = {"clip_id": dragged.id, "track": overlay_track, "press_x": press_x,
                           "orig_start": 0.0, "duration": 1.0}
@@ -977,7 +977,7 @@ class TimelineSmokeTests(unittest.TestCase):
     def test_timeline_drag_never_goes_negative(self):
         self.window.add_overlay_track()
         overlay_track = self.window.project.tracks[-1]
-        from mmclone.model import Clip
+        from easy_movie_studio.model import Clip
         clip = Clip.from_video(self.media.video_av, 2.0, start=0.0)
         overlay_track.add_clip(clip)
         timeline = self.window.timeline
