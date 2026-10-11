@@ -33,7 +33,7 @@ def log_dir() -> str:
     if not base:
         base = os.path.join(os.path.expanduser("~"), ".local", "state") \
             if os.name != "nt" else tempfile.gettempdir()
-    return os.path.join(base, "MovieStudio", "crash_logs")
+    return os.path.join(base, "EasyMovieStudio", "crash_logs")
 
 
 def write_crash_log(exc_type, exc_value, tb) -> str:

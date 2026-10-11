@@ -1,12 +1,10 @@
-# ClipForge
+# Easy Movie Studio
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Tests](https://github.com/OWNER/REPO/actions/workflows/tests.yml/badge.svg)](https://github.com/OWNER/REPO/actions/workflows/tests.yml)
 
 A free, open-source, Windows Movie Maker style video editor in Python (PySide6 +
 FFmpeg), built as a modern replacement now that Movie Maker itself is discontinued.
-The app identifies itself as "Movie Studio" in its title bar and window icon -- that's
-its in-app name; ClipForge is the project/repo name.
 
 No AI features, no telemetry, no account required -- just a straightforward multi-clip
 video editor: import, trim, transitions, titles/credits, pan & zoom, audio mixing, and
@@ -45,18 +43,18 @@ MIT -- see [LICENSE](LICENSE).
     python scripts\build_icon.py     # once, or whenever the app icon design changes
     pyinstaller mmclone.spec
 
-This produces `dist\MovieStudio\MovieStudio.exe` -- a one-folder build (faster to
-start than a single-file `--onefile` build, which matters more for an editor kept open
-all session than a smaller installer does). `mmclone.spec` bundles qtawesome's icon
-font and the `ffmpeg.exe` that ships inside `imageio-ffmpeg`, so the folder runs on a
-machine with nothing else installed. That bundled FFmpeg build is minimal, though (see "FFmpeg" below) -- for the best
+This produces `dist\EasyMovieStudio\EasyMovieStudio.exe` -- a one-folder build (faster
+to start than a single-file `--onefile` build, which matters more for an editor kept
+open all session than a smaller installer does). `mmclone.spec` bundles qtawesome's
+icon font and the `ffmpeg.exe` that ships inside `imageio-ffmpeg`, so the folder runs on
+a machine with nothing else installed. That bundled FFmpeg build is minimal, though (see "FFmpeg" below) -- for the best
 results, drop a full FFmpeg build's `ffmpeg.exe` and `ffprobe.exe` straight into the
-`dist\MovieStudio` folder, next to `MovieStudio.exe`. No environment variable or setup
-step needed for that to be picked up -- the app's own folder is searched automatically
-(right after `MMCLONE_FFMPEG_DIR`, before PATH), specifically so a packaged build can
-be made complete by just adding two files. Distribute the whole `dist\MovieStudio`
-folder (zipped, or wrapped in an installer with a tool like Inno Setup) --
-`MovieStudio.exe` on its own is missing its PySide6/FFmpeg/font payload.
+`dist\EasyMovieStudio` folder, next to `EasyMovieStudio.exe`. No environment variable or
+setup step needed for that to be picked up -- the app's own folder is searched
+automatically (right after `MMCLONE_FFMPEG_DIR`, before PATH), specifically so a
+packaged build can be made complete by just adding two files. Distribute the whole
+`dist\EasyMovieStudio` folder (zipped, or wrapped in an installer with a tool like Inno
+Setup) -- `EasyMovieStudio.exe` on its own is missing its PySide6/FFmpeg/font payload.
 
 ## Status
 

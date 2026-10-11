@@ -2,7 +2,7 @@
 
 Search order: the folder in the MMCLONE_FFMPEG_DIR environment variable, then the
 folder the app itself is running from (so dropping ffmpeg.exe/ffprobe.exe next to a
-packaged MovieStudio.exe just works, with no environment variable to set), then PATH,
+packaged EasyMovieStudio.exe just works, with no environment variable to set), then PATH,
 then the ffmpeg binary bundled with the ``imageio-ffmpeg`` package. Note that
 imageio-ffmpeg ships ``ffmpeg`` only (no ``ffprobe``), so media probing has a fallback
 that reads the output of ``ffmpeg -i``.

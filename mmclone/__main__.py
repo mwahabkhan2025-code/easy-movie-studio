@@ -49,7 +49,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         import ctypes
         try:  # groups the taskbar icon under our own app instead of generic python.exe
             ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(
-                f"MovieStudio.{APP_NAME}.{__version__}")
+                f"EasyMovieStudio.{APP_NAME}.{__version__}")
         except Exception:
             pass
 

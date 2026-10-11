@@ -1,4 +1,4 @@
-# PyInstaller spec: builds a single Windows .exe for Movie Studio.
+# PyInstaller spec: builds a single Windows .exe for Easy Movie Studio.
 #
 # Build (from the project root, with the venv from requirements.txt active and
 # PyInstaller installed -- `pip install pyinstaller`):
@@ -6,7 +6,7 @@
 #     python scripts\build_icon.py            (once, or after the icon design changes)
 #     pyinstaller mmclone.spec
 #
-# The result is dist\MovieStudio\MovieStudio.exe (a one-folder build, not --onefile --
+# The result is dist\EasyMovieStudio\EasyMovieStudio.exe (a one-folder build, not --onefile --
 # a single-folder build starts much faster, which matters more for an editor the person
 # keeps open than shaving the installer down to one file). See README.md's "Packaging"
 # section for what still has to be placed next to the .exe (a full FFmpeg build).
@@ -56,7 +56,7 @@ exe = EXE(
     a.scripts,
     [],
     exclude_binaries=True,
-    name="MovieStudio",
+    name="EasyMovieStudio",
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
@@ -72,5 +72,5 @@ coll = COLLECT(
     a.datas,
     strip=False,
     upx=False,
-    name="MovieStudio",
+    name="EasyMovieStudio",
 )

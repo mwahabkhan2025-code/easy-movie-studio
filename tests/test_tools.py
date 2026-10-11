@@ -62,7 +62,7 @@ class FindToolSearchOrderTests(unittest.TestCase):
             self.assertIsNone(tools._app_dir())
 
     def test_app_dir_resolves_from_sys_executable_when_frozen(self):
-        fake_exe = os.path.join(self.dir, "MovieStudio.exe")
+        fake_exe = os.path.join(self.dir, "EasyMovieStudio.exe")
         with mock.patch.object(sys, "frozen", True, create=True), \
              mock.patch.object(sys, "executable", fake_exe):
             self.assertEqual(tools._app_dir(), self.dir)

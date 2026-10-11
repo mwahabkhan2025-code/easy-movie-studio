@@ -1,8 +1,8 @@
-# Contributing to ClipForge
+# Contributing to Easy Movie Studio
 
-Thanks for taking a look! ClipForge (the app identifies itself as "Movie Studio") is a
-small, from-scratch video editor, and contributions of any size are welcome -- bug
-reports, small fixes, new features, or just trying it out and filing issues.
+Thanks for taking a look! Easy Movie Studio is a small, from-scratch video editor, and
+contributions of any size are welcome -- bug reports, small fixes, new features, or just
+trying it out and filing issues.
 
 ## Project layout
 
