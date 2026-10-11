@@ -1,7 +1,7 @@
 # Easy Movie Studio
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Tests](https://github.com/OWNER/REPO/actions/workflows/tests.yml/badge.svg)](https://github.com/OWNER/REPO/actions/workflows/tests.yml)
+[![Tests](https://github.com/mwahabkhan2025-code/easy-movie-studio/actions/workflows/tests.yml/badge.svg)](https://github.com/mwahabkhan2025-code/easy-movie-studio/actions/workflows/tests.yml)
 
 A free, open-source, Windows Movie Maker style video editor in Python (PySide6 +
 FFmpeg), built as a modern replacement now that Movie Maker itself is discontinued.
@@ -21,6 +21,8 @@ MIT -- see [LICENSE](LICENSE).
 
 ## Setup (Windows, Python 3.11, 64-bit)
 
+    git clone https://github.com/mwahabkhan2025-code/easy-movie-studio.git
+    cd easy-movie-studio
     python -m venv .venv
     .venv\Scripts\activate
     pip install -r requirements-dev.txt
