@@ -1,0 +1,10 @@
+# Runtime dependencies (Python 3.11, 64-bit).
+# The data model (chunk 1a) needs only the standard library; the UI (1b) needs PySide6 + qtawesome.
+PySide6>=6.6
+imageio-ffmpeg>=0.4.9
+opencv-python>=4.9
+numpy>=1.26
+Pillow>=10.0
+sounddevice>=0.4.6
+soundfile>=0.12
+qtawesome>=1.3
